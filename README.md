@@ -80,7 +80,8 @@ Open Claude Code and try:
 
 | Document | Description |
 |----------|-------------|
-| [Quick Start Guide](docs/QUICK_START.md) | 10 hands-on use cases to learn the system |
+| [Quick Start Guide](docs/QUICK_START.md) | 12 hands-on use cases to learn the system |
+| [Advanced Examples](docs/ADVANCED_EXAMPLES.md) | 15 power-user scenarios: discover hidden connections, generate hypotheses, uncover "new facts" |
 | [User Guide](docs/USER_GUIDE.md) | Complete user documentation |
 | [Developer Guide](docs/DEVELOPER_GUIDE.md) | For developers extending the system |
 | [Architecture](docs/ARCHITECTURE.md) | System design and data flow |

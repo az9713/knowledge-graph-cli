@@ -409,9 +409,10 @@ You've learned to:
 **Suggested next steps:**
 
 1. **Build your personal knowledge graph** - Start adding claims from your daily reading
-2. **Read the full User Guide** - [USER_GUIDE.md](USER_GUIDE.md) for complete documentation
-3. **Explore advanced patterns** - Try complex queries and lineage tracing
-4. **Contribute** - If you're a developer, see the [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)
+2. **Try Advanced Examples** - [ADVANCED_EXAMPLES.md](ADVANCED_EXAMPLES.md) for 15 power-user scenarios that showcase discovering hidden connections, generating new hypotheses, and uncovering "new facts"
+3. **Read the full User Guide** - [USER_GUIDE.md](USER_GUIDE.md) for complete documentation
+4. **Explore advanced patterns** - Try complex queries and lineage tracing
+5. **Contribute** - If you're a developer, see the [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)
 
 ---
 
