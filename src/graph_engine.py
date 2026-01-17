@@ -341,3 +341,40 @@ class KnowledgeGraph:
     def get_unit_connections(self, unit_id: str) -> list[Relation]:
         """Get all relations connected to a unit."""
         return self.persistence.get_relations_for_unit(unit_id)
+
+    def delete_unit(self, unit_id: str) -> dict:
+        """Delete a unit from the knowledge graph.
+
+        Removes the unit from:
+        1. LanceDB (vector storage)
+        2. NetworkX graph (in-memory)
+        3. All relations involving this unit (persistence)
+
+        Returns:
+            dict with deleted_unit info and counts
+        """
+        # Get unit info before deletion
+        unit = self.get_unit(unit_id)
+        if not unit:
+            raise ValueError(f"Unit not found: {unit_id}")
+
+        # Get connections count before deletion
+        connections = self.get_unit_connections(unit_id)
+
+        # 1. Delete from LanceDB
+        self.table.delete(f"id = '{unit_id}'")
+
+        # 2. Remove from NetworkX graph
+        if self.graph.has_node(unit_id):
+            self.graph.remove_node(unit_id)
+
+        # 3. Delete all relations involving this unit
+        deleted_relations = self.persistence.delete_relations_for_unit(unit_id)
+
+        return {
+            "deleted_unit_id": unit_id,
+            "deleted_content": unit.content,
+            "deleted_source": unit.source_doi,
+            "deleted_relations_count": deleted_relations,
+            "connections_removed": len(connections),
+        }

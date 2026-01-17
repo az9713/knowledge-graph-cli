@@ -26,7 +26,7 @@ ACI (Agent-Computer-Interaction) is an MCP server that provides a scientific kno
 ACI/
 ├── src/
 │   ├── __init__.py       # Package marker
-│   ├── server.py         # MCP server with 7 tools (entry point)
+│   ├── server.py         # MCP server with 8 tools (entry point)
 │   ├── model.py          # Pydantic models (AtomicUnit, Relation, responses)
 │   ├── graph_engine.py   # KnowledgeGraph class (LanceDB + NetworkX)
 │   └── persistence.py    # JSON persistence for relations and idempotency
@@ -51,7 +51,7 @@ ACI/
 ## Key Files
 
 ### src/server.py
-The MCP server entry point. Defines 7 tools:
+The MCP server entry point. Defines 8 tools:
 - `ingest_hypothesis` - Add new propositions
 - `connect_propositions` - Create relationships
 - `semantic_search` - Vector similarity search
@@ -59,6 +59,7 @@ The MCP server entry point. Defines 7 tools:
 - `find_contradictions` - Conflict detection
 - `list_propositions` - Browse knowledge base
 - `get_unit` - Get single unit details
+- `delete_unit` - Remove units (requires confirmation)
 
 ### src/graph_engine.py
 Core `KnowledgeGraph` class that:
@@ -203,5 +204,4 @@ To test interactively:
 4. Add unit tests with mocked embeddings (for CI without API calls)
 5. Add export/import functionality
 6. Add tagging/categorization
-7. Add delete_unit tool for removing incorrect claims
-8. Add confidence threshold filtering in search
+7. Add confidence threshold filtering in search

@@ -195,7 +195,7 @@ ACI uses semantic search, so you can find related concepts even if they use diff
 
 ## Using the Tools
 
-ACI provides 7 tools that Claude can use. Here's how to use each one:
+ACI provides 8 tools that Claude can use. Here's how to use each one:
 
 ### 1. Ingest Hypothesis
 
@@ -329,6 +329,32 @@ ACI provides 7 tools that Claude can use. Here's how to use each one:
 - Use unit IDs from other commands
 - Great for exploring the graph
 - See what each unit connects to
+
+### 8. Delete Unit
+
+**Purpose:** Remove incorrect or outdated claims from your knowledge graph.
+
+**How to use:**
+```
+"Delete unit abc123"
+```
+
+**What Claude does:**
+1. Shows you what will be deleted (content, connections)
+2. Asks for confirmation
+3. If confirmed, permanently removes:
+   - The unit from the database
+   - All connections involving that unit
+
+**Safety features:**
+- Requires explicit confirmation (you must confirm the deletion)
+- Shows exactly what will be removed before deleting
+- Cannot be undone once confirmed
+
+**Tips:**
+- Review the confirmation carefully before confirming
+- Consider adding a correcting claim with "refutes" relation instead
+- Use to clean up mistakes or outdated information
 
 ---
 
@@ -563,9 +589,16 @@ A: Semantic search isn't perfect:
 
 **Q: Can I edit or delete units?**
 
-A: Currently, there's no delete function in the tools (for safety). You can:
-- Add correcting units with "refutes" relations
-- Contact a developer to remove from the database directly
+A: You can delete units using the `delete_unit` tool:
+```
+"Delete unit [unit-id]"
+```
+Claude will show you what will be deleted and ask for confirmation. This permanently removes the unit and all its connections.
+
+For editing, there's no direct edit function. Instead:
+- Delete the incorrect unit
+- Add a corrected version with `ingest_hypothesis`
+- Or add a clarifying unit connected with "refutes" relation
 
 ### Troubleshooting
 

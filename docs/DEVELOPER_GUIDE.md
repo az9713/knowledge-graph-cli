@@ -420,65 +420,30 @@ def add_proposition(
 
 ### Adding a New Tool
 
-**Example: Add a `delete_unit` tool**
+**Reference Implementation: `delete_unit` tool**
 
-1. **Add to `src/server.py`:**
+The `delete_unit` tool is a good example of a properly implemented MCP tool. See `src/server.py` for the full implementation. Key patterns it demonstrates:
 
-```python
-@mcp.tool()
-def delete_unit(unit_id: str, confirm: bool = False) -> dict:
-    """
-    Deletes an atomic unit from the knowledge graph.
+1. **Safety confirmation** - Requires `confirm=True` to prevent accidental deletions
+2. **Preview mode** - Without confirmation, shows what would be deleted
+3. **HATEOAS response** - Returns `available_actions` suggesting next steps
+4. **Comprehensive cleanup** - Removes from LanceDB, NetworkX, and persistence
 
-    Use this when:
-    - Removing incorrect or outdated information
-    - Cleaning up the knowledge base
+**Steps to add a new tool:**
 
-    Args:
-        unit_id: The ID of the unit to delete
-        confirm: Must be True to actually delete (safety check)
+1. **Add the MCP tool to `src/server.py`:**
+   - Use `@mcp.tool()` decorator
+   - Write a comprehensive docstring (Claude uses this to decide when to use the tool)
+   - Include "Use this when:" examples
+   - Return dict with `status`, result data, and `available_actions`
 
-    Returns:
-        Deletion status
-    """
-    if not confirm:
-        return {
-            "status": "error",
-            "message": "Set confirm=True to delete. This action cannot be undone."
-        }
+2. **Add supporting methods to `src/graph_engine.py`:**
+   - Implement the core logic in the KnowledgeGraph class
+   - Handle all storage layers (LanceDB, NetworkX, persistence)
 
-    graph = get_graph()
-
-    # Check if unit exists
-    unit = graph.get_unit(unit_id)
-    if not unit:
-        return {"status": "error", "message": f"Unit not found: {unit_id}"}
-
-    # Delete from LanceDB
-    graph.delete_unit(unit_id)
-
-    return {
-        "status": "success",
-        "deleted_id": unit_id,
-        "deleted_content": unit.content,
-    }
-```
-
-2. **Add method to `src/graph_engine.py`:**
-
-```python
-def delete_unit(self, unit_id: str) -> bool:
-    """Delete a unit from the graph."""
-    # Delete from LanceDB
-    self.table.delete(f"id = '{unit_id}'")
-
-    # Remove from NetworkX
-    if self.graph.has_node(unit_id):
-        self.graph.remove_node(unit_id)
-
-    # Note: Related edges in persistence would need cleanup too
-    return True
-```
+3. **Add persistence support if needed (`src/persistence.py`):**
+   - Add methods for loading/saving any new data
+   - Handle cleanup of related data on deletion
 
 ### Adding a New Relation Type
 

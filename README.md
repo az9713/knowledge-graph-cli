@@ -100,6 +100,7 @@ Once configured, Claude can use these tools:
 | `find_contradictions` | Check if a claim conflicts with existing knowledge |
 | `list_propositions` | Browse all stored claims |
 | `get_unit` | Get details of a specific claim |
+| `delete_unit` | Remove a claim and its connections (requires confirmation) |
 
 ## Project Structure
 
@@ -107,7 +108,7 @@ Once configured, Claude can use these tools:
 ACI/
 ├── src/
 │   ├── __init__.py       # Package marker
-│   ├── server.py         # MCP server entry point (7 tools)
+│   ├── server.py         # MCP server entry point (8 tools)
 │   ├── model.py          # Pydantic data models
 │   ├── graph_engine.py   # Knowledge graph logic (LanceDB + NetworkX)
 │   └── persistence.py    # JSON persistence for relations and idempotency

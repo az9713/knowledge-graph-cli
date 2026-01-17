@@ -106,3 +106,15 @@ class PersistenceManager:
         self._idempotency_cache = {}
         self._save_idempotency()
         return count
+
+    def delete_relations_for_unit(self, unit_id: str) -> int:
+        """Delete all relations involving a specific unit. Returns count of deleted relations."""
+        original_count = len(self._relations)
+        self._relations = [
+            r for r in self._relations
+            if r["source_id"] != unit_id and r["target_id"] != unit_id
+        ]
+        deleted_count = original_count - len(self._relations)
+        if deleted_count > 0:
+            self._save_relations()
+        return deleted_count

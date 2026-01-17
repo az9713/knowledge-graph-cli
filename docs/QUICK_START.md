@@ -428,6 +428,7 @@ You've learned to:
 | Find path | "Find the lineage from [concept A] to [concept B]" |
 | Check conflicts | "Check if [claim] contradicts anything" |
 | Browse all | "List propositions in my knowledge graph" |
+| Delete a claim | "Delete unit [id]" (requires confirmation) |
 
 **Relation types:**
 - `supports` - A provides evidence for B

@@ -450,6 +450,69 @@ def get_unit(unit_id: str) -> dict:
     }
 
 
+@mcp.tool()
+def delete_unit(unit_id: str, confirm: bool = False) -> dict:
+    """
+    Deletes an atomic unit from the knowledge graph.
+
+    Use this when:
+    - Removing incorrect or outdated information
+    - Cleaning up the knowledge base
+    - Correcting mistakes in ingested claims
+
+    WARNING: This action cannot be undone. All connections to this unit
+    will also be deleted.
+
+    Args:
+        unit_id: The ID of the unit to delete
+        confirm: Must be True to actually delete (safety check)
+
+    Example: delete_unit("abc123-...", confirm=True)
+
+    Returns deletion status and what was removed.
+    """
+    if not confirm:
+        # Get unit info to show what would be deleted
+        graph = get_graph()
+        unit = graph.get_unit(unit_id)
+        if not unit:
+            return {"status": "error", "message": f"Unit not found: {unit_id}"}
+
+        connections = graph.get_unit_connections(unit_id)
+        return {
+            "status": "confirmation_required",
+            "message": "Set confirm=True to delete. This action cannot be undone.",
+            "unit_to_delete": {
+                "id": unit.id,
+                "content": unit.content,
+                "source": unit.source_doi,
+            },
+            "connections_to_delete": len(connections),
+            "warning": f"This will permanently delete the unit and {len(connections)} connection(s).",
+        }
+
+    graph = get_graph()
+
+    try:
+        result = graph.delete_unit(unit_id)
+        return {
+            "status": "success",
+            "message": "Unit deleted successfully",
+            "deleted": {
+                "unit_id": result["deleted_unit_id"],
+                "content": result["deleted_content"],
+                "source": result["deleted_source"],
+                "relations_removed": result["deleted_relations_count"],
+            },
+            "available_actions": [
+                {"tool": "list_propositions", "description": "View remaining units"},
+                {"tool": "ingest_hypothesis", "description": "Add a corrected version"},
+            ],
+        }
+    except ValueError as e:
+        return {"status": "error", "message": str(e)}
+
+
 def main():
     """Entry point for the MCP server."""
     mcp.run()
