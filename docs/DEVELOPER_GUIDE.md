@@ -196,7 +196,7 @@ async def get_data():
 
 ```toml
 [project]
-name = "aci-knowledge-graph"
+name = "knowledge-graph-cli"
 version = "0.1.0"
 dependencies = [
     "mcp[cli]>=1.0.0",   # MCP server framework
