@@ -1212,4 +1212,62 @@ Pick one of these examples and build it in your own knowledge graph. Then try:
 
 The more you add, the more powerful the graph becomes. Each new fact creates potential connections to everything that's already there.
 
+---
+
+## Automated Testing
+
+Eight of these advanced examples are covered by automated tests to ensure all capabilities work correctly:
+
+```bash
+# Run Advanced Examples tests
+uv run python tests/test_advanced_examples.py
+```
+
+**Expected output:**
+```
+[START] ACI ADVANCED EXAMPLES TEST SUITE
+
+Example 1: Hidden Connections...
+  Found path: REM Sleep -> Creativity pathway
+  [OK] Discovered connection through 2 intermediate concepts
+
+Example 2: Hypothesis Generation...
+  Generated pathway: Metformin -> AMPK -> mTOR -> Cancer
+  [OK] Mechanistic pathway complete
+
+...
+
+[END] ADVANCED EXAMPLES RESULTS
+   Ex1: [OK] Hidden Connections (Sleep -> Creativity)
+   Ex2: [OK] Hypothesis Generation (Drug Repurposing)
+   Ex3: [OK] Research Gaps (Climate Feedback)
+   Ex4: [OK] Contradictions (Economics)
+   Ex5: [OK] Cross-Domain Innovation (Biology -> Cybersecurity)
+   Ex6: [OK] Pattern Discovery (Power Laws)
+   Ex7: [OK] Aha! Moments (Climate Resilience)
+   Ex8: [OK] Idea Archaeology (Internet History)
+
+[SUMMARY] 8/8 advanced examples passed
+[SUCCESS] ALL ADVANCED EXAMPLES WORK!
+```
+
+**What the tests verify:**
+- 50+ atomic units created from diverse domains
+- 58+ semantic connections established
+- Cross-domain lineage paths discovered
+- Emergent patterns detected
+- Knowledge graph inference working correctly
+
+**Test Results Summary:**
+| Example | Units | Connections | Insight Generated |
+|---------|-------|-------------|-------------------|
+| Hidden Connections | 5 | 5 | Sleep-creativity pathway |
+| Hypothesis Generation | 6 | 5 | Metformin mechanism |
+| Research Gaps | 7 | 7 | Missing climate data |
+| Contradictions | 6 | 6 | Economic theory conflicts |
+| Cross-Domain | 10 | 7 | Bio-cyber patterns |
+| Pattern Discovery | 7 | 7 | Universal power laws |
+| Aha! Moments | 10 | 10 | Resilience solutions |
+| Idea Archaeology | 8 | 7 | Internet family tree |
+
 Happy knowledge graphing!

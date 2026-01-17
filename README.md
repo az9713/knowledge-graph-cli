@@ -106,15 +106,57 @@ Once configured, Claude can use these tools:
 ```
 ACI/
 ├── src/
-│   ├── server.py         # MCP server entry point
-│   ├── model.py          # Data models
-│   ├── graph_engine.py   # Knowledge graph logic
-│   └── persistence.py    # Data storage
+│   ├── __init__.py       # Package marker
+│   ├── server.py         # MCP server entry point (7 tools)
+│   ├── model.py          # Pydantic data models
+│   ├── graph_engine.py   # Knowledge graph logic (LanceDB + NetworkX)
+│   └── persistence.py    # JSON persistence for relations and idempotency
+├── tests/
+│   ├── test_quick_start.py      # 12 use cases from Quick Start guide
+│   └── test_advanced_examples.py # 8 advanced scenarios
 ├── data/                 # Stored knowledge (auto-created)
+│   ├── atomic_graph.lance/  # LanceDB vector storage
+│   ├── relations.json       # Graph edges
+│   └── idempotency.json     # Idempotency cache
 ├── docs/                 # Documentation
+├── .env                  # API keys (create this - see below)
 ├── .mcp.json            # MCP configuration
 └── pyproject.toml       # Python dependencies
 ```
+
+## Testing
+
+ACI includes comprehensive automated tests that verify all documented functionality:
+
+```bash
+# Run Quick Start use cases (12 tests)
+uv run python tests/test_quick_start.py
+
+# Run Advanced Examples (8 scenarios)
+uv run python tests/test_advanced_examples.py
+```
+
+### Test Results Summary
+
+**Quick Start Tests** (12/12 passing):
+- Hypothesis ingestion with sources
+- Knowledge cluster building
+- Semantic connections
+- Natural language search
+- Unit exploration
+- Intellectual lineage tracing
+- Contradiction detection
+- Cross-domain knowledge linking
+
+**Advanced Examples Tests** (8/8 passing):
+- Hidden connection discovery (Sleep → Creativity)
+- Hypothesis generation (Drug repurposing)
+- Research gap identification (Climate feedback)
+- Implicit contradiction uncovering (Economics)
+- Cross-domain innovation (Biology → Cybersecurity)
+- Emergent pattern discovery (Power laws)
+- "Aha!" moment generation (Urban resilience)
+- Historical idea archaeology (Internet origins)
 
 ## Support
 

@@ -462,4 +462,40 @@ You've learned to:
 
 ---
 
+## Automated Testing
+
+All 12 use cases in this guide are covered by automated tests. You can run them to verify your setup works correctly:
+
+```bash
+# Run all Quick Start use cases
+uv run python tests/test_quick_start.py
+```
+
+**Expected output:**
+```
+[START] ACI QUICK START TEST SUITE
+...
+[END] TEST RESULTS SUMMARY
+   UC1: [OK] PASS  Your First Hypothesis
+   UC2: [OK] PASS  Adding a Source
+   ...
+   UC12: [OK] PASS Cross-Domain Knowledge
+[SUMMARY] Total: 12/12 use cases passed
+[SUCCESS] ALL TESTS PASSED!
+```
+
+The tests:
+- Ingest real claims using the OpenAI API
+- Create connections between units
+- Perform semantic searches
+- Trace intellectual lineages
+- Verify all documented functionality works
+
+If any tests fail, check:
+1. Your `OPENAI_API_KEY` is set correctly in `.env`
+2. You've run `uv sync` to install dependencies
+3. Your internet connection is working
+
+---
+
 Happy knowledge building!

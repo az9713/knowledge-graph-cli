@@ -30,11 +30,19 @@ ACI/
 │   ├── model.py          # Pydantic models (AtomicUnit, Relation, responses)
 │   ├── graph_engine.py   # KnowledgeGraph class (LanceDB + NetworkX)
 │   └── persistence.py    # JSON persistence for relations and idempotency
-├── data/                 # Runtime data directory
+├── tests/
+│   ├── test_quick_start.py      # 12 use cases from QUICK_START.md
+│   └── test_advanced_examples.py # 8 advanced scenarios
+├── data/                 # Runtime data directory (auto-created)
 │   ├── atomic_graph.lance/  # LanceDB vector storage
 │   ├── relations.json       # Graph edges
 │   └── idempotency.json     # Idempotency key cache
-├── docs/                 # Documentation
+├── docs/
+│   ├── QUICK_START.md       # 12 hands-on use cases
+│   ├── ADVANCED_EXAMPLES.md # 15 power-user scenarios
+│   ├── USER_GUIDE.md        # Complete user documentation
+│   ├── DEVELOPER_GUIDE.md   # Developer documentation
+│   └── ARCHITECTURE.md      # System design
 ├── .mcp.json            # Project-scope MCP configuration
 ├── .env                 # Environment variables (OPENAI_API_KEY)
 └── pyproject.toml       # Python project configuration
@@ -129,8 +137,48 @@ The `KnowledgeGraph` is initialized lazily via `get_graph()` to allow environmen
 
 ## Testing
 
-Currently no automated tests. To test manually:
-1. Set `OPENAI_API_KEY` environment variable
+ACI includes two comprehensive test suites:
+
+### Quick Start Tests (12 use cases)
+Tests all functionality from the Quick Start guide:
+```bash
+uv run python tests/test_quick_start.py
+```
+
+**What it tests:**
+- Hypothesis ingestion (with and without sources)
+- Building knowledge clusters (multiple related claims)
+- Connecting propositions (supports, extends, contradicts)
+- Semantic search (natural language queries)
+- Unit exploration (get_unit details)
+- Research topic building (transformers cluster)
+- Intellectual lineage tracing
+- Contradiction detection and marking
+- Literature review workflow
+- Cross-domain knowledge linking
+
+### Advanced Examples Tests (8 scenarios)
+Tests emergent knowledge discovery capabilities:
+```bash
+uv run python tests/test_advanced_examples.py
+```
+
+**What it tests:**
+1. **Hidden Connections** - Sleep → Creativity pathways
+2. **Hypothesis Generation** - Drug repurposing (Metformin → Cancer)
+3. **Research Gaps** - Climate feedback loop gaps
+4. **Contradictions** - Economic theory vs evidence
+5. **Cross-Domain Innovation** - Immune system → Cybersecurity
+6. **Pattern Discovery** - Universal power laws
+7. **"Aha!" Moments** - Climate resilience solutions
+8. **Idea Archaeology** - Internet's intellectual history
+
+### Test Results
+All tests pass: **12/12 Quick Start** + **8/8 Advanced Examples** = **20/20 total**
+
+### Manual Testing
+To test interactively:
+1. Set `OPENAI_API_KEY` in `.env` file
 2. Run server: `uv run python src/server.py`
 3. Use MCP Inspector or Claude Desktop to test tools
 
@@ -152,6 +200,8 @@ Currently no automated tests. To test manually:
 1. Add batch ingestion for papers
 2. Add graph visualization endpoint
 3. Support multiple embedding models
-4. Add unit tests with mocked embeddings
+4. Add unit tests with mocked embeddings (for CI without API calls)
 5. Add export/import functionality
 6. Add tagging/categorization
+7. Add delete_unit tool for removing incorrect claims
+8. Add confidence threshold filtering in search

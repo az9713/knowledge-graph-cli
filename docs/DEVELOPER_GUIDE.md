@@ -507,9 +507,123 @@ valid_relations = ["supports", "refutes", "extends", "implies", "contradicts", "
 
 ## Testing
 
+### Automated Test Suites
+
+ACI includes comprehensive automated tests that verify all documented functionality:
+
+```
+tests/
+├── test_quick_start.py      # 12 use cases from QUICK_START.md
+└── test_advanced_examples.py # 8 advanced scenarios
+```
+
+### Running Tests
+
+```bash
+# Run Quick Start use cases (12 tests)
+uv run python tests/test_quick_start.py
+
+# Run Advanced Examples (8 scenarios)
+uv run python tests/test_advanced_examples.py
+```
+
+**Expected output:**
+```
+[START] ACI QUICK START TEST SUITE
+...
+[END] TEST RESULTS SUMMARY
+   UC1: [OK] PASS
+   UC2: [OK] PASS
+   ...
+[SUMMARY] Total: 12/12 use cases passed
+[SUCCESS] ALL TESTS PASSED!
+```
+
+### What the Tests Cover
+
+**Quick Start Tests (12 use cases):**
+| Test | What's Verified |
+|------|-----------------|
+| UC1 | Basic hypothesis ingestion |
+| UC2 | Ingestion with source attribution |
+| UC3 | Multiple related claims (knowledge cluster) |
+| UC4 | Connecting propositions (supports, extends) |
+| UC5 | Semantic search with natural language |
+| UC6 | Unit exploration (get_unit) |
+| UC7 | Research topic building (transformers) |
+| UC8 | Intellectual lineage tracing |
+| UC9 | Contradiction detection |
+| UC10 | Building explicit contradictions |
+| UC11 | Literature review workflow |
+| UC12 | Cross-domain knowledge linking |
+
+**Advanced Examples Tests (8 scenarios):**
+| Test | What's Verified |
+|------|-----------------|
+| Ex1 | Hidden connection discovery |
+| Ex2 | Hypothesis generation |
+| Ex3 | Research gap identification |
+| Ex4 | Implicit contradiction uncovering |
+| Ex5 | Cross-domain innovation patterns |
+| Ex6 | Emergent pattern discovery |
+| Ex7 | "Aha!" moment generation |
+| Ex8 | Historical idea archaeology |
+
+### Test Architecture
+
+The tests use real OpenAI API calls (not mocked) to ensure end-to-end correctness:
+
+```python
+# Tests import server functions directly
+from src.server import (
+    ingest_hypothesis,
+    connect_propositions,
+    semantic_search,
+    find_scientific_lineage,
+    find_contradictions,
+    list_propositions,
+    get_unit,
+)
+
+# Each test run starts with clean data
+test_data_dir = Path(__file__).parent.parent / "data"
+if test_data_dir.exists():
+    shutil.rmtree(test_data_dir)
+```
+
+### Writing New Tests
+
+When adding new functionality, follow this pattern:
+
+```python
+def run_my_new_test():
+    """Test description."""
+    # 1. Ingest test data
+    result1 = ingest_hypothesis(
+        hypothesis="My test claim",
+        idempotency_key="test-unique-key"
+    )
+    units["my_unit"] = result1.get("unit_id")
+
+    # 2. Connect if needed
+    result2 = connect_propositions(
+        id_a=units["my_unit"],
+        id_b=units["other_unit"],
+        relation="supports",
+        reasoning="Test reasoning",
+        idempotency_key="test-conn-key"
+    )
+
+    # 3. Verify results
+    assert result1.get("status") == "success"
+    assert result2.get("status") == "success"
+
+    return True  # Test passed
+```
+
 ### Manual Testing
 
-Since there are no automated tests yet, test manually:
+For interactive exploration:
 
 ```bash
 # Start Python interpreter
@@ -540,9 +654,9 @@ uv run python
 >>> shutil.rmtree("./test_data")
 ```
 
-### Writing Automated Tests
+### Future: Unit Tests with Mocked Embeddings
 
-Create `tests/test_graph_engine.py`:
+For CI environments without API access, you can add mocked tests:
 
 ```python
 import pytest
@@ -554,7 +668,7 @@ from src.graph_engine import KnowledgeGraph
 
 
 class TestKnowledgeGraph:
-    """Tests for KnowledgeGraph class."""
+    """Tests for KnowledgeGraph class with mocked OpenAI."""
 
     @pytest.fixture
     def mock_openai(self):
@@ -578,17 +692,9 @@ class TestKnowledgeGraph:
         assert unit.content == "Test content"
         assert unit.source_doi == "Test source"
         assert len(unit.vector) == 1536
-
-    def test_get_unit(self, graph):
-        """Test retrieving a unit."""
-        unit = graph.add_proposition("Test", "Source")
-        retrieved = graph.get_unit(unit.id)
-
-        assert retrieved is not None
-        assert retrieved.content == "Test"
 ```
 
-Run tests:
+Run with pytest:
 ```bash
 uv run pytest tests/ -v
 ```

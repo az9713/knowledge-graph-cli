@@ -607,4 +607,25 @@ Now that you understand the basics:
 4. **Expand:** Gradually add more knowledge
 5. **Explore:** Use lineage tracing to discover connections
 
-For hands-on practice, see the [Quick Start Guide](QUICK_START.md) with 10+ example use cases.
+### Learning Resources
+
+| Resource | Description |
+|----------|-------------|
+| [Quick Start Guide](QUICK_START.md) | 12 hands-on use cases to learn the basics |
+| [Advanced Examples](ADVANCED_EXAMPLES.md) | 15 power-user scenarios: discover hidden connections, generate hypotheses, uncover "new facts" |
+| [Architecture](ARCHITECTURE.md) | How the system works internally |
+| [Developer Guide](DEVELOPER_GUIDE.md) | For those who want to extend the system |
+
+### Verify Your Setup
+
+After installation, you can run the automated tests to make sure everything works:
+
+```bash
+# Run 12 use cases from the Quick Start guide
+uv run python tests/test_quick_start.py
+
+# Run 8 advanced scenarios
+uv run python tests/test_advanced_examples.py
+```
+
+All tests should pass (20/20 total). If any fail, check your API key and dependencies.

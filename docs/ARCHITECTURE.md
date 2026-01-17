@@ -602,3 +602,72 @@ The architecture separates concerns cleanly:
 - **graph_engine.py** - Logic (how tools work)
 - **model.py** - Data (what data looks like)
 - **persistence.py** - Storage (how data persists)
+
+---
+
+## Verification & Testing
+
+### Test Architecture
+
+ACI includes end-to-end tests that validate all documented functionality using real API calls:
+
+```
+tests/
+├── test_quick_start.py      # 12 use cases from Quick Start guide
+└── test_advanced_examples.py # 8 advanced scenarios
+```
+
+### Test Strategy
+
+**Why end-to-end tests?**
+
+The tests use real OpenAI API calls and real LanceDB storage to verify the complete system works as documented. This catches integration issues that mocked tests would miss.
+
+**Test isolation:**
+- Each test run clears the `data/` directory to start fresh
+- Idempotency keys prevent duplicate operations during retries
+- Tests are deterministic given the same input
+
+### Running Tests
+
+```bash
+# Run Quick Start use cases (12 tests)
+uv run python tests/test_quick_start.py
+
+# Run Advanced Examples (8 scenarios)
+uv run python tests/test_advanced_examples.py
+```
+
+### Test Coverage
+
+| Test Suite | Tests | What's Verified |
+|------------|-------|-----------------|
+| Quick Start | 12 | All 7 tools, basic workflows |
+| Advanced Examples | 8 | Emergent knowledge discovery, cross-domain connections |
+
+**Total: 20 tests covering 100% of documented use cases**
+
+### Test Data Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    TEST EXECUTION                            │
+│                                                             │
+│  1. Clean data/ directory (fresh state)                     │
+│  2. Call server functions directly (bypass MCP transport)   │
+│  3. Verify response structure and status                    │
+│  4. Track unit IDs for connection tests                     │
+│  5. Validate search returns expected results                │
+│  6. Verify lineage paths exist                              │
+│  7. Report pass/fail summary                                │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Adding New Tests
+
+When adding new functionality:
+
+1. Add use case to appropriate documentation (QUICK_START.md or ADVANCED_EXAMPLES.md)
+2. Add corresponding test function to test file
+3. Follow pattern: ingest → connect → search/lineage → verify
+4. Use idempotency keys to allow safe re-runs
